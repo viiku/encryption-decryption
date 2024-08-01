@@ -19,8 +19,30 @@ string decrypt(string text, int shift) {
     return encrypt(text, 26 - shift);
 }
 
-void processFile() {
+void processFile(const string& inputaFile, const string& outputFile, bool isEncrypt, int shift) {
+    ifstream inFile(inputFile);
+    ofstream outFile(outputFile);
 
+    if(!inFile) {
+        cout << "Error opening input file." << endl;
+        return;
+    }
+
+    if(!outFile) {
+        cout << "Error opening output file." << endl;
+        return;
+    }
+    
+    string line;
+    while (getline(inFile, line)) {
+        string processedLine = isEncrypt ? encrypt(line, shift) : decrypt(line, shift);
+        outFile << processedLine << endl;
+    }
+
+    inFile.close();
+    outFile.close();
+
+    cout << (isEncrypt ? "Encryption" : "Decryption") << " completed." << endl;
 }
 
 int main() {
